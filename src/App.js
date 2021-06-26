@@ -8,23 +8,27 @@ import "./index.css";
 import HomePage from "./pages/home";
 import ImagePage from "./pages/image";
 import UserPage from "./pages/user";
-
+import configureAppStore from "./redux/store";
+import { Provider } from "react-redux";
+const store = configureAppStore();
 //udpaetd
 function App() {
   return (
-    <ContextWrapper>
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path="/" component={HomePage} exact />
-          {/* <Route path="/">
+    <Provider store={store}>
+      <ContextWrapper>
+        <Router>
+          <Navbar />
+          <Switch>
+            <Route path="/" component={HomePage} exact />
+            {/* <Route path="/">
           <HomePage />
         </Route> */}
-          <Route path="/users" component={UserPage} exact />
-          <Route path="/image" component={ImagePage} exact />
-        </Switch>
-      </Router>
-    </ContextWrapper>
+            <Route path="/users" component={UserPage} exact />
+            <Route path="/image" component={ImagePage} exact />
+          </Switch>
+        </Router>
+      </ContextWrapper>
+    </Provider>
   );
 }
 

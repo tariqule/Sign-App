@@ -6,16 +6,24 @@ import Input from "../../components/Input";
 import Subtitle from "../../components/Subtitle";
 import axios from "axios";
 import { Context } from "../../context/contextProvider";
+
+import { useDispatch, useSelector } from "react-redux";
+import { postHome, selectHome } from "../../redux/slices/home";
+import { userSlice } from "../../redux/slices/user";
+import { useSean } from "../../hooks/useSean";
 //module => export Default => There can be only one export default
 //Component will return something
 
 //functional Component
 //
-const HomePage = () => {
+const HomePage = (props) => {
   //object Destructing
-  const { email, setEmail, password, setPassword } = useContext(Context);
+  const { email, setEmail, password, setPassword } = useSean();
 
   let userInput = []; //wed ont wanna do mutation
+
+  const { homes, pending, error } = useSelector(selectHome);
+  const dispatch = useDispatch();
 
   //   const [email, setEmail] = React.useState("Enter Email");
   //  const [password, setPassword] = React.useState("Enter Password");
@@ -23,21 +31,27 @@ const HomePage = () => {
   const handleOnChangeEmail = (event) => {
     console.log(event.target.value);
     setEmail(event.target.value);
+
+    dispatch(userSlice.actions.saveSeanUser(event.target.value));
   };
 
   const handleOnChangePassword = (event) => {
     console.log(event.target.value);
     setPassword(event.target.value);
+
+    dispatch(userSlice.actions.saveSeanPassword(event.target.value));
   };
   {
     /* state to store image  */
   }
+  const inputRef = React.useRef();
 
   const onClickHandler = () => {
     //our password length min 3 chars- if less than : invalid password
     //one upper and lower case
     //one symbol
     //regex
+    alert(inputRef.current.value);
     console.log(email);
     const validatePasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
 
@@ -84,15 +98,18 @@ const HomePage = () => {
 
   return (
     <Wrapper>
+      <h1>{email}</h1>
       <Title>{data.title}</Title>
       <Subtitle>{data.subtitle}</Subtitle>
       <Input
+        margin="10"
         sean="email"
         tariq="email"
         onChange={(event) => handleOnChangeEmail(event)}
       />
 
       <Input
+        margin={10}
         sean="password"
         tariq="password"
         onChange={(event) => handleOnChangePassword(event)}
@@ -102,6 +119,7 @@ const HomePage = () => {
 
       {/* input field  */}
       <Input
+        margin={10}
         sean="text"
         tariq="Send User"
         onChange={(event) => setEmail(event.target.value)}
@@ -121,17 +139,17 @@ const HomePage = () => {
           //third way - old way - es5 - dont do this
           // don't mutate the state
           setUsers(users.concat(data));
-
+          dispatch(postHome(data));
           console.log(users);
 
-          axios
-            .post("https://jsonplaceholder.typicode.com/users", data)
-            .then(({ data }) => {
-              console.log(data);
-            })
-            .catch((err) => {
-              console.log("ERORR", err);
-            });
+          // axios
+          //   .post("https://jsonplaceholder.typicode.com/users", data)
+          //   .then(({ data }) => {
+          //     console.log(data);
+          //   })
+          //   .catch((err) => {
+          //     console.log("ERORR", err);
+          //   });
         }}
       >
         Submit
@@ -141,3 +159,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+// //NEVER USE VAR = -100%

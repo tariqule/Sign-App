@@ -1,8 +1,10 @@
 import axios from "axios";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Subtitle from "../../components/Subtitle";
 import Title from "../../components/Title";
 import Wrapper from "../../components/Wrapper";
+import { fetchUser, selectUser } from "../../redux/slices/user";
 
 //module => export Default => There can be only one export default
 //Component will return something
@@ -14,20 +16,24 @@ const UserPage = () => {
   //axios
   //ajax
   //render
-  const [users, setUsers] = React.useState([]);
+  // const [users, setUsers] = React.useState([]);
+
+  const { users, pending, error, email, password } = useSelector(selectUser);
+
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
+    dispatch(fetchUser());
     //axios
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then(({ data }) => {
-        console.log(data);
-        setUsers(data);
-      })
-      .catch((err) => {
-        console.log("ERORR", err);
-      });
-
+    // axios
+    //   .get("https://jsonplaceholder.typicode.com/users")
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //     setUsers(data);
+    //   })
+    //   .catch((err) => {
+    //     console.log("ERORR", err);
+    //   });
     //USING FETCH
     // fetch("https://jsonplaceholder.typicode.com/users")
     //   .then((response) => response.json())
@@ -49,6 +55,8 @@ const UserPage = () => {
           </li>
         ))}
       </ul>
+      <h1>{email}</h1>
+      <h1>{password}</h1>
     </Wrapper>
   );
 };
