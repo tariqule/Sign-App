@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Note: This is a test project for the students at my coding bootcamp
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
